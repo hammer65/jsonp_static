@@ -1,0 +1,31 @@
+{
+  "name": "jsonp_static",
+  "authors": [
+    "Chris Root <hammer65@gmail.com>"
+  ],
+  "description": "static version of jsonp demo",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://facebook.com/codercentral",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "paper-input": "PolymerElements/paper-input#~1.1.5",
+    "react": "~0.14.6",
+    "flux": "~2.1.1",
+    "react-router": "~1.0.3",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
+    "iron-jsonp-library": "PolymerElements/iron-jsonp-library#^1.0.4",
+    "iron-pages": "PolymerElements/iron-pages#^1.0.5",
+    "paper-button": "PolymerElements/paper-button#^1.0.11",
+    "paper-dialog": "PolymerElements/paper-dialog#^1.0.3",
+    "platinum-sw": "PolymerElements/platinum-sw#^1.2.3",
+    "babel": "*"
+  }
+}
