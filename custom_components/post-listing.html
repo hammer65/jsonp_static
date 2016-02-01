@@ -1,0 +1,48 @@
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="post-listing">
+  <style>
+    #content{
+      display:block;
+      font-size:10px;
+      font-family: Georgia, serif;
+      font-weight: 200;
+    }
+    #main{
+      margin:2px;
+      border:1px solid #999;
+      border-radius:5px;
+      padding:4px;
+    }
+    #main:hover{
+      cursor:pointer;
+      background-color:#E9E9E9;
+    }
+    strong{
+      font-size:12px;
+      font-weight:800;
+      font-family:sans-serif;
+    }
+  </style>
+  <template>
+    <div id="main" on-click="handleClick">
+      <strong>{{post-title}}</strong>
+      <div id="content">
+        <content></content>
+      </div>
+    </div>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'post-listing',
+    properties: {
+      "post-title": String
+    },
+    handleClick: function(){
+      console.log('clicked');
+      this.fire('post-load',{id: this.root.id});
+    }
+  });
+</script>
