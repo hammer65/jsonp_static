@@ -3,55 +3,110 @@
 <head>
   <title></title>
   <title>My Blog</title>
+
+  <!--
+  Style includes just static styles not state styles
+  -->
+  <style is="custom-style">
+    paper-drawer-panel {
+     --paper-drawer-panel-left-drawer-container: {
+         background-color: #1E1E33; 
+         border-right: 2px solid #4444FF;
+         padding-right:2px;
+      };
+   }
+  </style>
+
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="components.html">
 </head>
-<body>  <!--
-  <polymer-react>
-    <post-listing post-title="Blah blah blah">
-      blah
-    </post-listing>
-  </polymer-react>
-  
-
-          <paper-drawer-panel>
-            <polymer-react drawer>
-              <div>Item 1</div>
-            </polymer-react>
-            <polymer-react main>
-              <h1>Hello</h1>
-            </polymer-react>
-          </paper-drawer-panel>-->
-  <div id="app"></div>
+<body id="app"> 
 
 
 
   <script type="text/javascript" src="bower_components/react/react.js"></script>
   <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
   <script type="text/javascript" src="bower_components/babel/browser.min.js"></script>
+  <script type="text/javascript" src="bower_components/flux/dist/Flux.min.js"></script>
+  <script type="text/javascript" src="bower_components/react-router/dist/ReactRouter.min.js"></script>
+
   <script type="text/babel">
+
+    var Dispatcher = new Flux.Dispatcher();
+    var Router = ReactRouter;
+
+    var postStore = [
+      {
+        id: 1,
+        title: "React and Polymer Together",
+        description: "Learn to use Polymer and React together",
+        content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
+        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
+        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
+        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
+        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
+        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
+        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
+        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
+        +"accumsan. Maecenas et magna sem.</p>"
+      },
+      {
+        id: 2,
+        title: "Using Vulcanize",
+        description: "Learn how to use Vlucanize to combine all your web component fiels.",
+        content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
+        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
+        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
+        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
+        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
+        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
+        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
+        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
+        +"accumsan. Maecenas et magna sem.</p>"
+      }
+    ];
+
     var Application = React.createClass({
       render: function(){
+        var posts = this.props.posts.map(function(p){
+          return (
+            <Post data={p} type="list" />
+          );
+        });
         return (
-          <paper-drawer-panel>
-            <polymer-react drawer>
-              <PostListing title="React and Polymer Together">
-                Learn to use Polymer and React togther for dynamic applications.
-              </PostListing>
-            </polymer-react>
-            <polymer-react main>
+          <paper-drawer-panel >
+            <paper-header-panel drawer>
+              {posts}
+            </paper-header-panel>
+            <paper-header-panel main>
               <h1>Hello</h1>
-            </polymer-react>
+            </paper-header-panel>
           </paper-drawer-panel>
         );
       }
     });
 
-    var PostListing = React.createClass({
+    var Post = React.createClass({
+      displayPost: function(){
+        Dispatcher.dispatch({
+            actionType: "show-post",
+            selectedPost: this.data.id
+         }
+        );
+      },
       render: function(){
+        var content = (
+            <div>{this.props.data.description}</div>
+          );
+        if(this.props.type == "full"){
+          content = (
+              <div>{this.props.data.content}</div>
+            );
+        }
+        console.log(this.props.data.title);
         return (
-          <post-listing post-title={this.props.title}>
-            {this.props.children}
+          <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
+            {content}
           </post-listing>
         );
       }
@@ -59,7 +114,7 @@
     var app = document.querySelector('#app');
     ReactDOM.render(
       React.createElement(
-        Application,{}
+        Application,{posts:postStore}
       ),app
     );
   </script>

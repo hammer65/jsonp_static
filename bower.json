@@ -27,6 +27,8 @@
     "paper-dialog": "PolymerElements/paper-dialog#^1.0.3",
     "platinum-sw": "PolymerElements/platinum-sw#^1.2.3",
     "babel": "*",
-    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.6"
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.6",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.2.2",
+    "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.2"
   }
 }

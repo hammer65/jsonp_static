@@ -1,0 +1,291 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"readFile",
+				"fs.readFile(path, options, callback_);"
+			],
+			[
+				"text",
+				"textarea	Tag"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 504.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control:",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 694.0
+	},
+	"console":
+	{
+		"height": 281.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/chris/projects/jsonp_static/index.html",
+		"/home/chris/projects/jsonp_static/components.html",
+		"/home/chris/projects/nashorn_browser/html/history.html",
+		"/home/chris/projects/psk/app/index.html",
+		"/home/chris/projects/psk/app/elements/elements.html",
+		"/home/chris/projects/qsfrontend-react/src/main.js",
+		"/home/chris/projects/qsfrontend-react/node_modules/react-router/lib/Router.js",
+		"/home/chris/projects/qsfrontend-react/node_modules/react-router/lib/index.js",
+		"/home/chris/projects/qsfrontend-react/node_modules/react-router/lib/useRoutes.js",
+		"/home/chris/projects/qsfrontend-react/node_modules/react-router/umd/ReactRouter.js",
+		"/home/chris/projects/qsfrontend-react/node_modules/history/lib/createBrowserHistory.js",
+		"/home/chris/projects/qsfrontend-react/src/index.html",
+		"/home/chris/projects/qsfrontend-react/src/routes.js",
+		"/home/chris/projects/qsfrontend-react/src/components/app.js",
+		"/home/chris/projects/qsfrontend-react/src/components/quote/quoteForm.js",
+		"/home/chris/projects/qsfrontend-react/src/components/quotes/quoteDetail.js",
+		"/home/chris/projects/qsfrontend-react/src/components/quotes/quotesView.js",
+		"/home/chris/projects/qsfrontend-react/src/components/quotes/sum.js",
+		"/home/chris/projects/qsfrontend-react/node_modules/react-router/lib/History.js",
+		"/home/chris/projects/qsfrontend-react/src/dispatcher/appDispatcher.js",
+		"/home/chris/projects/qsfrontend-react/src/components/notFoundPage.js",
+		"/home/chris/projects/qsfrontend-react/src/components/discovery/discovery.js",
+		"/home/chris/projects/qsfrontend-react/src/components/common/textInput.js",
+		"/home/chris/projects/qsfrontend-react/src/constants/actionTypes.js",
+		"/home/chris/projects/flux/Gulpfile.js",
+		"/home/chris/projects/web_desktop/index.html",
+		"/home/chris/projects/web_desktop/splash.html",
+		"/home/chris/projects/web_desktop/main.js",
+		"/home/chris/projects/qsfrontend-react/package.json",
+		"/home/chris/projects/flux/src/Dispatcher.js",
+		"/home/chris/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/chris/projects/web_desktop/script/main.js",
+		"/home/chris/projects/web_desktop/package.json",
+		"/home/chris/projects/web_desktop/applications.json",
+		"/home/chris/projects/flux/flow/lib/dev.js",
+		"/home/chris/projects/flux/src/utils/abstractMethod.js",
+		"/home/chris/projects/flux/package.json",
+		"/home/chris/projects/qsfrontend-react/gulpfile.js",
+		"/home/chris/projects/qsfrontend-react/dist/index.html",
+		"/home/chris/projects/qsfrontend-react/dist/scripts/bundle.js",
+		"/home/chris/projects/flux/dist/Flux.js",
+		"/home/chris/Downloads/react-0.14.3/examples/basic-commonjs/package.json",
+		"/home/chris/projects/web_desktop/server.js",
+		"/home/chris/projects/web_desktop/test/test.php",
+		"/home/chris/projects/web_desktop/test/index.php",
+		"/home/chris/projects/web_desktop/node_modules/node-php/main.js",
+		"/home/chris/projects/web_desktop/phpmyadmin.sh",
+		"/home/chris/projects/web_desktop/test/info.php",
+		"/home/chris/projects/web_desktop/node_modules/server.js",
+		"/home/chris/projects/web_desktop/node_modules/express/index.js",
+		"/home/chris/projects/web_desktop/script/child_server.js",
+		"/home/chris/projects/nashorn_browser/jbrowser",
+		"/home/chris/projects/lnchr/main.css",
+		"/home/chris/projects/cast/app/views/kane/_show_proposal.html.erb",
+		"/home/chris/projects/lnchr/lnchr",
+		"/home/chris/projects/cast/app/views/kane/_show_invoice.html.erb",
+		"/home/chris/projects/lnchr/lnchr.css",
+		"/home/chris/projects/lnchr/lnchr.js",
+		"/home/chris/projects/cast/app/controllers/kane_controller.rb",
+		"/home/chris/projects/cast/lib/semcat_toolkit.rb",
+		"/home/chris/projects/cast/config/app_config.yml",
+		"/home/chris/projects/toolkit/config/keys.yml",
+		"/home/chris/projects/toolkit/config/keys.example",
+		"/home/chris/projects/web_desktop/test.sh",
+		"/home/chris/projects/web_desktop/test/css/external.css",
+		"/home/chris/projects/web_desktop/test/js/external.js",
+		"/home/chris/projects/nashorn_browser/java/com/croot/messenger/Messenger.java",
+		"/home/chris/projects/nashorn_browser/script/webview.js",
+		"/home/chris/projects/nashorn_browser/java/com/jbrowser/util/HostWindow.java",
+		"/home/chris/Documents/ondrej-fabfile.py",
+		"/home/chris/projects/nashorn_browser/script/jsobject.js",
+		"/home/chris/projects/nashorn_browser/java/Callback.java",
+		"/home/chris/projects/nashorn_browser/test.js",
+		"/home/chris/projects/nashorn_browser/html/hw.html",
+		"/home/chris/projects/nashorn_browser/html/index.html",
+		"/home/chris/projects/nashorn_browser/java/messenger/MessageListener.java",
+		"/home/chris/projects/nashorn_browser/java/com/croot/messenger/HostWindow.java",
+		"/home/chris/projects/nashorn_browser/java/Test.java",
+		"/home/chris/projects/nashorn_browser/java/messenger/Messenger.java",
+		"/home/chris/projects/nashorn_browser/java/message.java",
+		"/home/chris/projects/JavaFX_ARM_demonstrator_2/src/application/Browser.java",
+		"/home/chris/projects/validator/vfunctions.php",
+		"/home/chris/projects/nashorn_browser/html/script/components.js",
+		"/home/chris/projects/validator/phpValidator.php",
+		"/home/chris/projects/validator/phpField.php",
+		"/home/chris/Downloads/react-0.14.3/examples/basic-jsx-external/example.js",
+		"/home/chris/Downloads/react-0.14.3/examples/basic-jsx-external/index.html",
+		"/home/chris/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/chris/Downloads/react-0.14.3/examples/basic-jsx/index.html",
+		"/home/chris/Downloads/react-0.14.3/examples/basic/index.html",
+		"/home/chris/projects/dataseed/app/assets/javascripts/components/custom.jsx",
+		"/home/chris/Downloads/react-bootstrap/react-bootstrap.js",
+		"/home/chris/Downloads/react-bootstrap/react-bootstrap.min.js",
+		"/home/chris/projects/react-bootstrap/tools/build-cli.js",
+		"/home/chris/projects/react-bootstrap/tools/buildBabel.js",
+		"/home/chris/projects/react-bootstrap/package.json",
+		"/home/chris/projects/react-bootstrap/tools/build.js",
+		"/home/chris/projects/react-bootstrap/node_modules/babel/README.md",
+		"/home/chris/projects/react-bootstrap/tools/exec.js",
+		"/home/chris/projects/react-bootstrap/tools/dist/build.js",
+		"/home/chris/Documents/brown_and_brown_seed_data",
+		"/home/chris/projects/javaFX_ARM_demonstrator/script/webview.js",
+		"/home/chris/projects/javaFX_ARM_demonstrator/script/exec_object.js",
+		"/home/chris/projects/javaFX_ARM_demonstrator/jbrowser"
+	],
+	"find":
+	{
+		"height": 43.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"_historyLibUseQueries2",
+			"too"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 43.0
+	},
+	"input":
+	{
+		"height": 55.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.CppYCM.2":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "jsonp_static",
+	"replace":
+	{
+		"height": 82.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 206.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
