@@ -20,12 +20,14 @@
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="components.html">
 </head>
-<body id="app"> 
-
+<body>
+  <div id="app"></div> 
+  <app-storage id="posts" />
 
 
   <script type="text/javascript" src="bower_components/react/react.js"></script>
   <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+  <script type="text/javascript" src="include/Emitter.js"></script>
   <script type="text/javascript" src="bower_components/babel/browser.min.js"></script>
   <script type="text/javascript" src="bower_components/flux/dist/Flux.min.js"></script>
   <script type="text/javascript" src="bower_components/react-router/dist/ReactRouter.min.js"></script>
@@ -34,89 +36,93 @@
 
     var Dispatcher = new Flux.Dispatcher();
     var Router = ReactRouter;
+    //window.addEventListener('polymer-ready',function(){
+      var PostStore = document.querySelector('#posts');
+      console.log("***",PostStore);
 
-    var postStore = [
-      {
-        id: 1,
-        title: "React and Polymer Together",
-        description: "Learn to use Polymer and React together",
-        content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
-        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
-        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
-        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
-        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
-        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
-        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
-        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
-        +"accumsan. Maecenas et magna sem.</p>"
-      },
-      {
-        id: 2,
-        title: "Using Vulcanize",
-        description: "Learn how to use Vlucanize to combine all your web component fiels.",
-        content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
-        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
-        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
-        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
-        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
-        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
-        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
-        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
-        +"accumsan. Maecenas et magna sem.</p>"
-      }
-    ];
-
-    var Application = React.createClass({
-      render: function(){
-        var posts = this.props.posts.map(function(p){
-          return (
-            <Post data={p} type="list" />
-          );
+      
+      PostStore.set({
+          id: 1,
+          title: "React and Polymer Together",
+          description: "Learn to use Polymer and React together",
+          content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
+          +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
+          +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
+          +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
+          +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
+          +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
+          +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
+          +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
+          +"accumsan. Maecenas et magna sem.</p>"
         });
-        return (
-          <paper-drawer-panel >
-            <paper-header-panel drawer>
-              {posts}
-            </paper-header-panel>
-            <paper-header-panel main>
-              <h1>Hello</h1>
-            </paper-header-panel>
-          </paper-drawer-panel>
-        );
-      }
-    });
-
-    var Post = React.createClass({
-      displayPost: function(){
-        Dispatcher.dispatch({
-            actionType: "show-post",
-            selectedPost: this.data.id
-         }
-        );
-      },
-      render: function(){
-        var content = (
-            <div>{this.props.data.description}</div>
-          );
-        if(this.props.type == "full"){
-          content = (
-              <div>{this.props.data.content}</div>
+      PostStore.set({
+          id: 2,
+          title: "Using Vulcanize",
+          description: "Learn how to use Vlucanize to combine all your web component fiels.",
+          content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
+          +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
+          +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
+          +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
+          +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
+          +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
+          +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
+          +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
+          +"accumsan. Maecenas et magna sem.</p>"
+        });
+/*
+      var Application = React.createClass({
+        render: function(){
+          var posts = this.props.posts.map(function(p){
+            return (
+              <Post data={p} type="list" />
             );
+          });
+          return (
+            <paper-drawer-panel >
+              <paper-header-panel drawer>
+                {posts}
+              </paper-header-panel>
+              <paper-header-panel main>
+                <h1>Hello</h1>
+              </paper-header-panel>
+            </paper-drawer-panel>
+          );
         }
-        console.log(this.props.data.title);
-        return (
-          <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
-            {content}
-          </post-listing>
-        );
-      }
-    });
-    var app = document.querySelector('#app');
-    ReactDOM.render(
-      React.createElement(
-        Application,{posts:postStore}
-      ),app
-    );
+      });
+
+      var Post = React.createClass({
+        displayPost: function(){
+          Dispatcher.dispatch({
+              actionType: "show-post",
+              selectedPost: this.data.id
+           }
+          );
+        },
+        render: function(){
+          var content = (
+              <div>{this.props.data.description}</div>
+            );
+          if(this.props.type == "full"){
+            content = (
+                <div>{this.props.data.content}</div>
+              );
+          }
+          console.log(this.props.data.title);
+          return (
+            <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
+              {content}
+            </post-listing>
+          );
+        }
+      });
+      var app = document.querySelector('#app');
+      ReactDOM.render(
+        React.createElement(
+          Application,{posts:PostStore.getAll()}
+        ),app
+      );*/
+    //});
+      
   </script>
 </body>
 </html>
