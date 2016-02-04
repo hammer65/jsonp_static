@@ -22,7 +22,7 @@
 </head>
 <body>
   <div id="app"></div> 
-  <app-storage id="posts" />
+  <app-storage name="posts" id="posts" />
 
 
   <script type="text/javascript" src="bower_components/react/react.js"></script>
@@ -38,11 +38,12 @@
     var Router = ReactRouter;
     //window.addEventListener('polymer-ready',function(){
       var PostStore = document.querySelector('#posts');
-      console.log("***",PostStore);
+      PostStore.addEventListener('posts-change',function(e){
+        console.log(e.detail);
+      });
 
       
-      PostStore.set({
-          id: 1,
+      PostStore.set(1,{
           title: "React and Polymer Together",
           description: "Learn to use Polymer and React together",
           content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
@@ -55,8 +56,7 @@
           +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
           +"accumsan. Maecenas et magna sem.</p>"
         });
-      PostStore.set({
-          id: 2,
+      PostStore.set(2,{
           title: "Using Vulcanize",
           description: "Learn how to use Vlucanize to combine all your web component fiels.",
           content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 

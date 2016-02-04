@@ -1,11 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html" />
+<!--
+<link rel="import" href="../bower_components/polymer-localforage/polymer-localforage.html" />
+-->
 
 <dom-module id="x-custom">
   <template>
-    <div>
-      <strong>{{post-title}}</strong>
-      <content></content>
-    </div>
+    <div id="blah">Hello {{name}}</div>
   </template>
 </dom-module>
 
@@ -14,7 +14,7 @@
 
     is: 'x-custom',
     properties:{
-      "post-title": {
+      "name": {
         type: String
       }
     }

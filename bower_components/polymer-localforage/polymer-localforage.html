@@ -147,7 +147,11 @@ license that can be found in the LICENSE file.
         } else {
           v = JSON.stringify(this.value)
         }
-        return localforage.setItem(this.name, v);
+        console.log("*** value ***",v);
+        console.log("** name **",this.name);
+        var ret = localforage.setItem(this.name, v);
+        console.log("* return *",ret);
+        return ret;
       }
     });
   </script>

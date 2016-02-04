@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html" />
-<link rel="import" href="../bower_components/polymer-localforage/polymer-localforage.html" />
 
 <dom-module id="app-storage">
   <template>
@@ -8,45 +7,42 @@
         display:none;
       };
     </style>
-    <polymer-localforage name="{{id}}" id="store" />
   </template>
 </dom-module>
 <script>
   (function(){
-    var _storage;
+    var _storage = [];
 
     Polymer({
       is: 'app-storage',
       properties:{
-        id: String
-      },
-      ready: function(){
-        _storage = this.$.store;
-      },
-      set: function(newVal){
-        console.log("** new val **",newVal);
-        console.log("** storage **",_storage);
-        if(!_storage.value){
-          _storage.value = [];
+        name:{
+          type: String
         }
-        _storage.value[newVal.id] = newVal;
-        var eName = this.id + "-change"
-        this.fire(eName,_storage.value);
+      },
+      set: function(id,newVal){
+        if(_storage == null){
+          _storage.save([]);
+        }
+        _storage[id] = newVal;
+        var eName = this.name + "-change"
+        console.log(eName);
+        this.fire(eName,_storage);
       },
       get: function(id){
-        return _storage.value[id];
+        return _storage[id];
       },
       getAll: function(){
         ret = [];
-        if(_storage.value){
-          ret = _storage.value;
+        if(_storage != null){
+          ret = _storage;
         }
         return ret;
       },
       deleteItem:function(id){
-        delete _storage.value[id];
-        var eName = this.id = '-change';
-        this.fire(eName,_storage.value)
+        delete _storage[id];
+        var eName = this.name = '-change';
+        this.fire(eName,_storage)
       }
     });
   })();
