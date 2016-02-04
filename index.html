@@ -32,6 +32,10 @@
    .hidden{
       display:none;
    }
+
+   .dialog{
+      width:650px;
+   }
   </style>
 
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -53,12 +57,16 @@
 
     var Dispatcher = new Flux.Dispatcher();
     Dispatcher.register(function(payload){
+      console.log("actionType ", payload.actionType);
       switch(payload.actionType){
         case 'show-post':
           PostStore.get(payload.selectedPost);
           break;
         case 'get-all':
           PostStore.getAll();
+          break;
+        case 'new-post':
+          PostStore.create(payload.postData);
           break;
       }
     });
@@ -236,42 +244,54 @@
             description:this.refs.description.value,
             content:this.refs.content.value
           };
+          this.refs.npDialog.close();
           Dispatcher.dispatch({
-            actiontype:'new-post',
+            actionType:'new-post',
             postData: payload
           });  
         },
         render: function(){
         return (
-          <div id="new-post" className="layout vertical center">
-            <h4>Create New Post</h4>
-            <div>
-              <fieldset>
-                 <paper-input 
-                   ref="title"
-                   floatingLabel
-                   autoValidate
-                   allowedPattern="/[a-zA-Z0-9]/"
-                   errorMessage="Must be Alpha Numeric"
-                   label="Post Title" />
-                   <paper-input
-                   ref="description"
-                   autoValidate
-                   allowedPattern="/[a-zA-Z0-9]/"
-                   errorMessage="Must be Alpha Numeric"
-                   multiple
-                   label="Post Description" />
-                   <paper-input
-                   ref="content"
-                   autoValidate
-                   allowedPattern="/[a-zA-Z0-9]/"
-                   errorMessage="Must be Alpha Numeric"
-                   multiple
-                   label="Post Content" />
-                   <paper-button onClick={this.create}>Submit</paper-button>
-              </fieldset>
+          <paper-dialog 
+              ref="npDialog"
+              opened={this.props.show}
+              modal="true"
+              entry-animation="scale-up-animation"
+              exit-animation="fade-out-animation">
+            <paper-dialog-scrollable>
+                <fieldset>
+                   <legend>New Post</legend>
+                   <paper-input 
+                     ref="title"
+                     floatingLabel
+                     autoValidate
+                     required
+                     allowedPattern="/[a-zA-Z0-9]/"
+                     errorMessage="Must be Alpha Numeric"
+                     label="Post Title" />
+                     <paper-input
+                     ref="description"
+                     autoValidate
+                     required
+                     allowedPattern="/[a-zA-Z0-9]/"
+                     errorMessage="Must be Alpha Numeric"
+                     multiple
+                     label="Post Description" />
+                     <paper-textarea
+                     ref="content"
+                     autoValidate
+                     required
+                     rows="8"
+                     allowedPattern="/[a-zA-Z0-9]/"
+                     errorMessage="Must be Alpha Numeric"
+                     label="Post Content" />
+                </fieldset>
+            </paper-dialog-scrollable>
+            <div className="buttons">
+              <paper-button dialog-dismiss>Cancel</paper-button>
+              <paper-button onClick={this.create}>Accept</paper-button>
             </div>
-          </div>
+          </paper-dialog>
         );
       }
     });
@@ -279,29 +299,19 @@
 
     var Dialog = React.createClass({
       render: function(){
-        var content;
-        switch(this.props.dialogType){
-          case 'newpost':
-            content = (
-              <NewPost />
-            );
-            break;
-          default:
-            content = (
-              <NewPost />
-            );
-        }
-        //placeholder
         if(this.props.show){
-          return (
-            <paper-dialog 
-                opened={this.props.show}
-                modal="true"
-                entry-animation="scale-up-animation"
-                exit-animation="fade-out-animation">
-              {content}
-            </paper-dialog>
-          );
+          var content;
+          switch(this.props.dialogType){
+            case 'newpost':
+              return (
+                <NewPost show={this.props.show} />
+              );
+              break;
+            default:
+              return (
+                <NewPost show="false" />
+              );
+          }
         }else{
             return (<div className="hidden"></div>);
         }
