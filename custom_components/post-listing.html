@@ -27,7 +27,7 @@
     }
   </style>
   <template>
-    <div id="main" on-click="handleClick">
+    <div id="main">
       <strong>{{post-title}}</strong>
       <div id="content">
         <content></content>
@@ -40,10 +40,6 @@
     is: 'post-listing',
     properties: {
       "post-title": String
-    },
-    handleClick: function(){
-      console.log('clicked');
-      this.fire('post-load',{id: this.root.id});
     }
   });
 </script>

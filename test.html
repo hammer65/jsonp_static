@@ -4,9 +4,14 @@
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="custom_components/x-custom.html" />
 
-    
+    <style>
+      div[blah]{
+        background-color: #DDAA99;
+      }
+    </style>
   </head>
   <body layout vertical>
-    <x-custom name="foo" />
+    <div blah="true">Blah blah</div>
+    <x-custom name="Chris" />
   </body>
 </html>

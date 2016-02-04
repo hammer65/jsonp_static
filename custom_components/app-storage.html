@@ -24,18 +24,32 @@
       ready:function(){
         _changeName = this.name + '-change';
       },
-      set: function(id,newVal){
-        if(_storage == null){
-          _storage.save([]);
+      update: function(id,newVal){
+        if(_storage[id] != null){
+           _storage[id] = newVal;
+          var payload = {
+            data:_storage,
+            type:'update'
+          };
+          this.fire(_changeName,payload);
         }
-        _storage[id] = newVal;
+      },
+      create: function(entry){
+        var id = _storage.length;
+        if(_storage == null){
+          _storage = [];
+        }
+        entry.id = id;
+        _storage[id] = entry;
         var payload = {
-          data:_storage,
-          type:'set'
-        };
+          data: _storage,
+          createdID: id,
+          type: 'create'
+        }
         this.fire(_changeName,payload);
       },
       get: function(id){
+        console.log("id is ",id);
         var payload = {
           data:_storage[id],
           type: "get"

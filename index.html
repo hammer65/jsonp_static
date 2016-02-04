@@ -11,9 +11,26 @@
     paper-drawer-panel {
      --paper-drawer-panel-left-drawer-container: {
          background-color: #1E1E33; 
-         border-right: 2px solid #4444FF;
          padding-right:2px;
       };
+   }
+   #post-header{
+     --paper-toolbar-background:#CCCCC4;
+     --paper-toolbar-color: #000;
+     --paper-toolbar-height:36px;
+   }
+
+   #content-header{
+     --paper-toolbar-background:#FFF;
+     --paper-toolbar-color: #595959;
+   }
+
+   #new-post{
+      cursor:pointer;
+   }
+
+   .hidden{
+      display:none;
    }
   </style>
 
@@ -36,15 +53,20 @@
 
     var Dispatcher = new Flux.Dispatcher();
     Dispatcher.register(function(payload){
-      if(payload.actionType == 'show-post'){
-        PostStore.get(payload.selectedPost);
+      switch(payload.actionType){
+        case 'show-post':
+          PostStore.get(payload.selectedPost);
+          break;
+        case 'get-all':
+          PostStore.getAll();
+          break;
       }
     });
     var Router = ReactRouter;
     var PostStore = document.querySelector('#posts');
 
     
-    PostStore.set(0,{
+    PostStore.create({
         title: "React and Polymer Together",
         description: "Learn to use Polymer and React together",
         content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
@@ -57,7 +79,7 @@
         +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
         +"accumsan. Maecenas et magna sem.</p>"
       });
-    PostStore.set(1,{
+    PostStore.create({
         title: "Using Vulcanize",
         description: "Learn how to use Vlucanize to combine all your web component fiels.",
         content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
@@ -74,46 +96,109 @@
     var Application = React.createClass({
       getInitialState: function(){
         return {
-          postLoad:null,
-          selectedPost:null
-        };
+          showDialog:false,
+          dialogType:null,
+          selectedPost:null,
+          posts:[]
+        }
       },
       componentDidMount: function(){
         PostStore.addEventListener('posts-change',this.handleChange);
-      },
-      setState: function(state){
-        this.state = state;
+        Dispatcher.dispatch({
+          actionType: 'get-all'
+        });
       },
       handleChange:function(e){
-        var playload = e.detail;
-        if(payload.type == 'get'){
-          this.setState({
-            postLoad:payload.data.id,
-            selectedPost: payload.data
-          });
+        var payload = e.detail;
+        console.log(payload);
+        switch(payload.type){
+          case 'get':
+            this.setState({
+              selectedPost: payload.data,
+              posts: this.state.posts
+            });
+            break;
+          case 'all':
+            this.setState({
+              selectedPost: null,
+              posts: payload.data
+            });
+          case 'create':
+            this.setState({
+              selectedPost: payload.data[payload.createdID],
+              posts:payload.data
+            });
         }
       },
+      newPost: function(){
+          var s = this.state;
+          s.showDialog = true;
+          s.dialogType = 'newpost';
+          this.setState(s);
+      },
+      render: function(){
+        
+        var content = (<HelloPage />);
+        if(this.state.selectedPost != null){
+          content = (
+            <Post id={this.state.selectedPost.id} type="full" data={this.state.selectedPost} />
+          );
+        }
+        return (
+          <div>
+            <Dialog show={this.state.showDialog} type={this.state.dialogType} />
+            <paper-drawer-panel>
+              <NavPanel posts={this.state.posts} />
+              <ContentPanel>
+                <paper-toolbar id="content-header" class="layout horizonal start-justified">
+                  <span id="new-post" onClick={this.newPost}>New Post</span>
+                </paper-toolbar>
+                {content}
+              </ContentPanel>
+            </paper-drawer-panel>
+          </div>
+        );
+      }
+    });
+
+    var NavPanel = React.createClass({
       render: function(){
         var posts = this.props.posts.map(function(p,i){
           return (
             <Post id={i} key={i} data={p} type="list" />
           );
         });
-        var content = (<polymer-react layout center-justified><h1>Hello</h1></polymer-react>);
-        if(this.state.postLoad != null){
-          content = (
-            <Post id={this.state.postLoad} data={this.state.selectedPost} />
-          );
-        }
+        // use class rather than className for polymer elements
         return (
-          <paper-drawer-panel >
             <paper-header-panel drawer>
+              <paper-toolbar id="post-header" class="layout horizontal">
+                <div className="title">Posts</div>
+              </paper-toolbar>
               {posts}
             </paper-header-panel>
-            <paper-header-panel main>
-              <h1>Hello</h1>
-            </paper-header-panel>
-          </paper-drawer-panel>
+        );
+      },
+    });
+
+    var ContentPanel = React.createClass({
+      render: function(){
+        return (
+          <paqper-header-panel main>
+           {this.props.children}
+          </paqper-header-panel>
+        ); 
+      },
+    });
+
+    var HelloPage = React.createClass({
+      render: function(){
+        return (
+          <div className="layout vertical center">
+            <h1>My React Blog</h1>
+            <p>
+              Welcome to my React blog. Where we discuss everything React and a few other things along the way.
+            </p> 
+          </div>
         );
       }
     });
@@ -122,7 +207,7 @@
       displayPost: function(){
         Dispatcher.dispatch({
             actionType: "show-post",
-            selectedPost: this.id
+            selectedPost: this.props.data.id
          }
         );
       },
@@ -131,11 +216,11 @@
             <div>{this.props.data.description}</div>
           );
         if(this.props.type == "full"){
+          var arg = {__html:this.props.data.content}
           content = (
-              <div>{this.props.data.content}</div>
+              <div dangerouslySetInnerHTML={arg}  />
             );
         }
-        console.log(this.props.data.title);
         return (
           <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
             {content}
@@ -143,6 +228,88 @@
         );
       }
     });
+
+    var NewPost = React.createClass({
+        create: function(){
+          var payload = {
+            title:this.refs.title.value,
+            description:this.refs.description.value,
+            content:this.refs.content.value
+          };
+          Dispatcher.dispatch({
+            actiontype:'new-post',
+            postData: payload
+          });  
+        },
+        render: function(){
+        return (
+          <div id="new-post" className="layout vertical center">
+            <h4>Create New Post</h4>
+            <div>
+              <fieldset>
+                 <paper-input 
+                   ref="title"
+                   floatingLabel
+                   autoValidate
+                   allowedPattern="/[a-zA-Z0-9]/"
+                   errorMessage="Must be Alpha Numeric"
+                   label="Post Title" />
+                   <paper-input
+                   ref="description"
+                   autoValidate
+                   allowedPattern="/[a-zA-Z0-9]/"
+                   errorMessage="Must be Alpha Numeric"
+                   multiple
+                   label="Post Description" />
+                   <paper-input
+                   ref="content"
+                   autoValidate
+                   allowedPattern="/[a-zA-Z0-9]/"
+                   errorMessage="Must be Alpha Numeric"
+                   multiple
+                   label="Post Content" />
+                   <paper-button onClick={this.create}>Submit</paper-button>
+              </fieldset>
+            </div>
+          </div>
+        );
+      }
+    });
+
+
+    var Dialog = React.createClass({
+      render: function(){
+        var content;
+        switch(this.props.dialogType){
+          case 'newpost':
+            content = (
+              <NewPost />
+            );
+            break;
+          default:
+            content = (
+              <NewPost />
+            );
+        }
+        //placeholder
+        if(this.props.show){
+          return (
+            <paper-dialog 
+                opened={this.props.show}
+                modal="true"
+                entry-animation="scale-up-animation"
+                exit-animation="fade-out-animation">
+              {content}
+            </paper-dialog>
+          );
+        }else{
+            return (<div className="hidden"></div>);
+        }
+      }
+    });
+
+
+
     var app = document.querySelector('#app');
     ReactDOM.render(
       React.createElement(
