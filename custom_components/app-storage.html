@@ -12,6 +12,7 @@
 <script>
   (function(){
     var _storage = [];
+    var _changeName;
 
     Polymer({
       is: 'app-storage',
@@ -20,29 +21,46 @@
           type: String
         }
       },
+      ready:function(){
+        _changeName = this.name + '-change';
+      },
       set: function(id,newVal){
         if(_storage == null){
           _storage.save([]);
         }
         _storage[id] = newVal;
-        var eName = this.name + "-change"
-        console.log(eName);
-        this.fire(eName,_storage);
+        var payload = {
+          data:_storage,
+          type:'set'
+        };
+        this.fire(_changeName,payload);
       },
       get: function(id){
-        return _storage[id];
+        var payload = {
+          data:_storage[id],
+          type: "get"
+        };
+        this.fire(_changeName,payload);
       },
       getAll: function(){
         ret = [];
         if(_storage != null){
           ret = _storage;
         }
+        var payload = {
+          data: ret,
+          type: 'all'
+        };
+        this.fire(_changeName,payload);
         return ret;
       },
       deleteItem:function(id){
         delete _storage[id];
-        var eName = this.name = '-change';
-        this.fire(eName,_storage)
+        var payload = {
+          data: _storage,
+          type: 'delete'
+        };
+        this.fire(_changeName,payload)
       }
     });
   })();
