@@ -1,0 +1,64 @@
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+
+<dom-module id="blog-comment">
+  <style>
+    :host{
+      display:block;
+      border-top:2px solid #CCC;
+    }
+    :host strong{
+      font-family:Georgia sans-serif;
+      font-size:14px;
+      padding-right:5px;
+    }
+    :host i{
+      font-family:Helvetica;
+      font-size:11px;
+    }
+    :host div{
+      position:relative;
+      padding:4px 25px 4px 28px;
+      border-left:1px solid #A5A5A5;
+      border-right:1px solid #A5A5A5;
+    }
+    :host div::before{
+      position:absolute;
+      top:0px;
+      left:4px;
+      content: '"';
+      color:#BBB;
+      font-size:35px;
+      font-weight:600;
+    }
+    :host div::after{
+      position:absolute;
+      top:0px;
+      right:4px;
+      content: '"';
+      color:#BBB;
+      font-size:35px;
+      font-weight:600;
+    }
+  </style>
+  <template>
+    <strong>{{author}}</strong>
+    <i>said this at: {{time}}</i>
+    <div>{{text}}</div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'blog-comment',
+    properties: {
+      author: String,
+      time: {
+        type: String,
+        value: function(){
+          return new Date().toString();
+        }
+      },
+      text: String
+    }
+  });
+</script>

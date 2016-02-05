@@ -220,20 +220,28 @@
         );
       },
       render: function(){
-        var content = (
-            <div>{this.props.data.description}</div>
-          );
         if(this.props.type == "full"){
+          var comments = '';
           var arg = {__html:this.props.data.content}
-          content = (
+          var content = (
               <div dangerouslySetInnerHTML={arg}  />
             );
+          return (
+            <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
+              {content}
+              <comment-section>
+                {comments}
+              </comment-section>
+            </post-listing>
+          );
+        }else{
+          return (
+            <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
+              <div>{this.props.data.description}</div>
+            </post-listing>
+          );
         }
-        return (
-          <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
-            {content}
-          </post-listing>
-        );
+          
       }
     });
 
@@ -318,6 +326,24 @@
       }
     });
 
+    var Comment = react.createClass({
+      render:function(){
+        return (
+          <blog-comment 
+            author={this.props.author}
+            time={this.props.time}
+            text={this.props.text} />
+        );
+      }
+    });
+
+    var CommentSection = react.createClass({
+      render: function(){
+        <comment-section>
+          {this.props.chidlren}
+        </comment-section>
+      }
+    });
 
 
     var app = document.querySelector('#app');

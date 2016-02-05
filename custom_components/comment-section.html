@@ -1,0 +1,59 @@
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html" />
+<link rel="import" href="../bower_components/paper-button/paper-button.html" />
+
+<dom-module id="comment-section">
+  <style>
+    #add{
+      margin-top:25px;
+    }
+    paper-textarea{
+      width:30%;
+    }
+    paper-button{
+      background: #CCCCCC;
+    }
+  </style>
+  <template>
+    <h4>Comments</h4>
+    <div>
+      <i>{{count}} Comments</i>
+      <content id="comments" select="blog-comment">
+
+      </content>
+      <div id="add">
+        <strong>Add a Comment</strong> 
+        <paper-textarea label="type your comment here" id="comment-box" rows$="{{commentRows}}" />
+      </div>
+      <paper-button raised>Submit</paper-button>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'comment-section',
+    properties:{
+      commentRows:{
+        type:Number,
+        value:5
+      },
+      postCount:{
+        type:Number,
+        value:function(){
+          return this.getEffectiveChildren().length;
+        },
+        reflectToAttribute: true,
+        readOnly:true,
+        notify:true
+      }
+    },
+    attached:function(){
+      var content = Polymer.dom(this.$.comments);
+      var self = this;
+      this._observer = content.observeNodes(function(){
+        self.count = self.getEffectiveChildren().length;
+      });
+    }
+  });
+</script>
