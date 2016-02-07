@@ -8,7 +8,7 @@
   Style includes just static styles not state styles
   -->
   <style is="custom-style">
-    paper-drawer-panel {
+   paper-drawer-panel {
      --paper-drawer-panel-left-drawer-container: {
          background-color: #1E1E33; 
          padding-right:2px;
@@ -36,133 +36,124 @@
    .dialog{
       width:650px;
    }
+
+   .content{
+     height:800px;
+   }
   </style>
 
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="components.html">
 </head>
 <body>
-  <div id="app"></div> 
-  <app-storage name="posts" id="posts" />
+  <div id="app"></div>
+  <sql-storage id="storage" database="app-storage" />
 
 
   <script type="text/javascript" src="bower_components/react/react.js"></script>
   <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
-  <script type="text/javascript" src="include/Emitter.js"></script>
   <script type="text/javascript" src="bower_components/babel/browser.min.js"></script>
   <script type="text/javascript" src="bower_components/flux/dist/Flux.min.js"></script>
   <script type="text/javascript" src="bower_components/react-router/dist/ReactRouter.min.js"></script>
 
   <script type="text/babel">
-
+    var l = false;
     var Dispatcher = new Flux.Dispatcher();
     Dispatcher.register(function(payload){
-      console.log("actionType ", payload.actionType);
+      
+      console.log('action is',payload.actionType);
       switch(payload.actionType){
-        case 'show-post':
-          PostStore.get(payload.selectedPost);
+        case 'a-show-post':
+          Store.getPost(payload.postId);
           break;
-        case 'get-all':
-          PostStore.getAll();
+        case 'a-post-all':
+          Store.getAllPosts();
+          l = true;
           break;
-        case 'new-post':
-          PostStore.create(payload.postData);
+        case 'a-new-post':
+          Store.create(payload.postData);
+          break;
+        case 'a-get-post-comments':
+          Store.getCommentsByPostId(payload.postId);
+          break;
+        case 'a-create-comment':
+          Store.createComment(payload.postData);
           break;
       }
     });
-    var Router = ReactRouter;
-    var PostStore = document.querySelector('#posts');
-
-    
-    PostStore.create({
-        title: "React and Polymer Together",
-        description: "Learn to use Polymer and React together",
-        content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
-        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
-        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
-        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
-        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
-        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
-        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
-        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
-        +"accumsan. Maecenas et magna sem.</p>"
-      });
-    PostStore.create({
-        title: "Using Vulcanize",
-        description: "Learn how to use Vlucanize to combine all your web component fiels.",
-        content: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
-        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
-        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
-        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
-        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
-        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
-        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
-        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
-        +"accumsan. Maecenas et magna sem.</p>"
-      });
+    var Store = document.querySelector('#storage');
 
     var Application = React.createClass({
       getInitialState: function(){
         return {
-          showDialog:false,
-          dialogType:null,
-          selectedPost:null,
-          posts:[]
+          Dialog:{
+            showDialog:false,
+            dialogType:null
+          },
+          Post:{
+            postId:null,
+            selectedPost:null,
+            posts:[]
+          }
         }
       },
       componentDidMount: function(){
-        PostStore.addEventListener('posts-change',this.handleChange);
+        Store.addEventListener('change',this.handleChange);
         Dispatcher.dispatch({
-          actionType: 'get-all'
+          actionType: 'a-post-all'
         });
       },
       handleChange:function(e){
         var payload = e.detail;
-        console.log(payload);
         switch(payload.type){
-          case 'get':
-            this.setState({
-              selectedPost: payload.data,
-              posts: this.state.posts
-            });
+          case 'post-get':
+            this.state.Post.selectedPost = payload.data;
+            this.setState(this.state);
+            Dispatcher.dispatch(
+             {actionType: 'a-get-post-comments',postId:payload.data.id}
+            );
             break;
-          case 'all':
-            this.setState({
-              selectedPost: null,
-              posts: payload.data
-            });
-          case 'create':
-            this.setState({
-              selectedPost: payload.data[payload.createdID],
-              posts:payload.data
-            });
+          case 'post-all':
+            this.state.Post.postId = null;
+            this.state.Post.selectedPost = null;
+            this.state.Post.posts = payload.data;
+            this.setState(this.state);
+            break;
+          case 'post-create':
+            Dispatcher.dispatch({actionType: 'get-all-posts'});
+            Dispatcher.dispatch({actionType: 'show-post',postId:payload.data});
+            this.setState(this.state);
         }
       },
       newPost: function(){
-          var s = this.state;
-          s.showDialog = true;
-          s.dialogType = 'newpost';
-          this.setState(s);
+          this.state.Dialog.showDialog = true;
+          this.state.Dialog.dialogType = 'newpost';
+          this.setState(this.state);
       },
       render: function(){
         
         var content = (<HelloPage />);
-        if(this.state.selectedPost != null){
+        if(this.state.Post.selectedPost != null){
           content = (
-            <Post id={this.state.selectedPost.id} type="full" data={this.state.selectedPost} />
+            <Post 
+              id={this.state.Post.postId} 
+              type="full" 
+              data={this.state.Post.selectedPost} />
           );
         }
         return (
           <div>
-            <Dialog show={this.state.showDialog} type={this.state.dialogType} />
+            <Dialog show={this.state.Dialog.showDialog} type={this.state.Dialog.dialogType} />
             <paper-drawer-panel>
-              <NavPanel posts={this.state.posts} />
-              <ContentPanel>
-                <paper-toolbar id="content-header" class="layout horizonal start-justified">
-                  <span id="new-post" onClick={this.newPost}>New Post</span>
-                </paper-toolbar>
-                {content}
-              </ContentPanel>
+              <NavPanel posts={this.state.Post.posts} />
+              <polymer-react main>
+                <ContentPanel>
+                  <paper-toolbar id="content-header" class="layout horizonal start-justified">
+                    <span id="new-post" onClick={this.newPost}>New Post</span>
+                  </paper-toolbar>
+                  {content}
+                </ContentPanel>
+              </polymer-react>
             </paper-drawer-panel>
           </div>
         );
@@ -178,12 +169,12 @@
         });
         // use class rather than className for polymer elements
         return (
-            <paper-header-panel drawer>
+            <paper-scroll-header-panel drawer class="flex">
               <paper-toolbar id="post-header" class="layout horizontal">
                 <div className="title">Posts</div>
               </paper-toolbar>
               {posts}
-            </paper-header-panel>
+            </paper-scroll-header-panel>
         );
       },
     });
@@ -191,9 +182,11 @@
     var ContentPanel = React.createClass({
       render: function(){
         return (
-          <paqper-header-panel main>
+          <div className="content">
+          <paper-scroll-header-panel>
            {this.props.children}
-          </paqper-header-panel>
+          </paper-scroll-header-panel>
+          </div>
         ); 
       },
     });
@@ -201,7 +194,7 @@
     var HelloPage = React.createClass({
       render: function(){
         return (
-          <div className="layout vertical center">
+          <div class="layout vertical center">
             <h1>My React Blog</h1>
             <p>
               Welcome to my React blog. Where we discuss everything React and a few other things along the way.
@@ -212,22 +205,56 @@
     });
 
     var Post = React.createClass({
+      getInitialState: function(){
+        return {comments:[]}
+      },
+      componentDidMount: function(){
+        var _self = this;
+        Store.addEventListener('change',function(e){
+          var payload = e.detail;
+          console.log('response in post ',payload.type,payload.aid);
+          switch(payload.type){
+            case 'post-comments':
+              _self.setState({comments:payload.data});
+              break;
+            case 'comment-create':
+              Dispatcher.dispatch({
+                actionType: 'get-comment',
+                commentId: payload.data
+              });
+              break;
+            case 'comment-get':
+              _self.state.comments.push(payload.data);
+              _self.setState(this.state);
+              break;
+          }
+        });
+        console.log('post type ',this.props.type);
+        
+      },
       displayPost: function(){
         Dispatcher.dispatch({
-            actionType: "show-post",
-            selectedPost: this.props.data.id
+            actionType: "a-show-post",
+            postId: this.props.data.id
          }
         );
       },
       render: function(){
         if(this.props.type == "full"){
-          var comments = '';
-          var arg = {__html:this.props.data.content}
-          var content = (
-              <div dangerouslySetInnerHTML={arg}  />
+          var comments = this.state.comments.map(function(c){
+            return (
+              <blog-comment
+                author={c.author}
+                time={c.created_at}
+                text={c.text} />
             );
+          });
+          var arg = {__html:this.props.data.text}
+          var content = (
+            <div dangerouslySetInnerHTML={arg}  />
+          );
           return (
-            <post-listing post-title={this.props.data.title} onClick={this.displayPost}>
+            <post-listing post-title={this.props.data.title}>
               {content}
               <comment-section>
                 {comments}
@@ -326,7 +353,7 @@
       }
     });
 
-    var Comment = react.createClass({
+    var Comment = React.createClass({
       render:function(){
         return (
           <blog-comment 
@@ -337,7 +364,7 @@
       }
     });
 
-    var CommentSection = react.createClass({
+    var CommentSection = React.createClass({
       render: function(){
         <comment-section>
           {this.props.chidlren}
@@ -349,7 +376,7 @@
     var app = document.querySelector('#app');
     ReactDOM.render(
       React.createElement(
-        Application,{posts:PostStore.getAll()}
+        Application,{}
       ),app
     );
       

@@ -5,7 +5,9 @@
 
 <dom-module id="x-custom">
   <template>
-    <div id$="{{name}}">Hello {{name}}</div>
+    <template is="dom-repeat" items="{{names}}">
+      <div name$="{{item}}">{{item}}</div>
+    </template>
   </template>
 </dom-module>
 
@@ -14,8 +16,8 @@
 
     is: 'x-custom',
     properties:{
-      "name": {
-        type: String
+      "names": {
+        type: Array
       }
     }
 

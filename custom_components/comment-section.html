@@ -13,6 +13,9 @@
     paper-button{
       background: #CCCCCC;
     }
+    :host{
+      overflow:auto;
+    }
   </style>
   <template>
     <h4>Comments</h4>
@@ -25,7 +28,7 @@
         <strong>Add a Comment</strong> 
         <paper-textarea label="type your comment here" id="comment-box" rows$="{{commentRows}}" />
       </div>
-      <paper-button raised>Submit</paper-button>
+      <paper-button raised on-click="commentSubmit">Submit</paper-button>
     </div>
   </template>
 </dom-module>
@@ -54,6 +57,9 @@
       this._observer = content.observeNodes(function(){
         self.count = self.getEffectiveChildren().length;
       });
+    },
+    commentSubmit: function(){
+      console.log('boo');
     }
   });
 </script>

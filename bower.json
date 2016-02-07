@@ -32,6 +32,8 @@
     "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.2",
     "polymer-localforage": "^1.0.0",
     "paper-toolbar": "PolymerElements/paper-toolbar#^1.1.4",
-    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.0"
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.0",
+    "kc-websql": "^0.0.9",
+    "paper-scroll-header-panel": "PolymerElements/paper-scroll-header-panel#^1.0.14"
   }
 }

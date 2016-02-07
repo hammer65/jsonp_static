@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DB Populate</title>
+    <link rel="import" href="custom_components/sql-storage.html" />
+  </head>
+  <body>
+    <sql-storage id="store" database="app-storage" />
+
+    <script>
+      var Store = document.querySelector('#store');
+      Store.createPost({
+        title: "React and Polymer Together",
+        description: "Learn to use Polymer and React together",
+        text: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
+        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
+        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
+        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
+        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
+        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
+        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
+        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
+        +"accumsan. Maecenas et magna sem.</p>"
+      });
+    Store.createPost({
+        title: "Using Vulcanize",
+        description: "Learn how to use Vlucanize to combine all your web component fiels.",
+        text: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " 
+        +"Proin in aliquam felis. Sed pulvinar iaculis dui sed interdum. Vivamus "
+        +"a mauris eget purus vulputate cursus quis at est. </p><p>Sed efficitur sodales "
+        +"rutrum. Proin sed ipsum vitae dolor semper fermentum. Cras augue"
+        +"libero, pretium quis commodo a, posuere eget sem. Curabitur sagittis "
+        +"turpis vitae arcu varius convallis. </p><p>Praesent dolor eros, consectetur quis "
+        +"dolor a, cursus ornare ex. Suspendisse non consequat urna. Nulla in purus "
+        +"quis turpis facilisis commodo at non odio. Nunc at augue in leo facilisis "
+        +"accumsan. Maecenas et magna sem.</p>"
+      });
+    Store.createComment({
+      post_id: 1,
+      author: "Bob Smith",
+      text: "Awesome artical thank you."
+    });
+    </script>
+  </body>
+</html>

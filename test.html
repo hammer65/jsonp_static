@@ -2,33 +2,20 @@
 <html>
   <head>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="custom_components/comment-section.html" />
-    <link rel="import" href="custom_components/blog-comment.html" />
+    <link rel="import" href="custom_components/sql-storage.html" />
 
-    <style>
-      blog-comment{
-        padding-top:8px;
-        width:30%;
-      }
-    </style>
+    
   </head>
   <body layout vertical>
-    <comment-section id="comments">
-      <blog-comment author="Bob Smith" text="I love this article"></blog-comment>
-    </comment-section>
+    <sql-storage id="store" database="app-storage" />
+
     <script>
-      var el = document.querySelector("#comments");
-      var dom = Polymer.dom(el);
-      var c = 0;
-      /*var i = setInterval(function(){
-        if(c > 5){
-          clearInterval(i);
-        }
-        var n = document.createElement("div");
-        n.innerHTML = "comment blah blah"
-        dom.appendChild(n);
-        c++;
-      },1000);*/
+      var el = document.querySelector('#store');
+      el.addEventListener('comment-all',function(e){
+        var data = e.detail;
+        console.log(data);
+      });
+      el.getAllComments();
     </script>
   </body>
 </html>

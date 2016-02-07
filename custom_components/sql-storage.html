@@ -1,0 +1,171 @@
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+<link rel="import" href="../bower_components/kc-websql/kc-websql.html" />
+<link rel="import" href="../bower_components/kc-websql/kc-websql-table.html" />
+
+<dom-module id='sql-storage'>
+  <template>
+    <kc-websql id="db" database$={{database}}>
+      <kc-websql-table name="posts" version="1.0">
+        <kc-websql-fields>
+          id INTEGER PRIMARY KEY, title TEXT, description TEXT ,text TEXT
+        </kc-websql-fields>
+      </kc-websql-table>
+      <kc-websql-table name="comments" version="1.0">
+        <kc-websql-fields>
+          id INTEGER PRIMARY KEY, author TEXT, post_id INT, text TEXT, created_at TEXT
+        </kc-websql-fields>
+      </kc-websql-table>
+    </kc-websql>
+  </template>
+</dom-module>
+
+<script>
+  (function(){
+    var _db;
+    function rowToArray(row){
+      var ret = [];
+      for(var i = 0;i < row.length;i++){
+        ret.push(row[i]);
+      }
+      return ret;
+    }
+
+    function aid(){
+      return Math.floor((Math.random() * 1000));
+    }
+
+    Polymer({
+      is: 'sql-storage',
+      properies: {
+        database: {
+          type: String,
+          value: 'blog-db',
+          readOnly: true
+        }
+      },
+      ready:function(){
+        _db = this.$.db;
+      },
+      getAllPosts: function(){
+        var self = this;
+        var actionName = "post-all";
+        _db.transaction().then(function(tx){
+          var query = 'SELECT * FROM posts'
+          _db.execSql(tx,query).then(function(data){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: rowToArray(data.rows)
+            };
+            self.fire('change',payload);
+          });
+        })
+      },
+      createPost: function(data){
+        var self = this;
+        var actionName = 'post-create';
+        _db.transaction().then(function(tx){
+          var params = [
+            data.title,
+            data.description,
+            data.text
+          ];
+          var query = 'INSERT INTO posts (title,description,text) VALUES (?,?,?)'
+          _db.execSql(tx,query,params).then(function(res){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: res.insertId
+            };
+            self.fire('change',payload);
+          });
+        });
+      },
+      getPost: function(id){
+        var self = this;
+        var actionName = 'post-get';
+        _db.transaction().then(function(tx){
+          var query = 'SELECT * FROM posts WHERE id=?';
+          _db.execSql(tx,query,[id]).then(function(res){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: res.rows[0]
+            };
+            self.fire('change',payload);
+          });
+        });
+      },
+      getComment: function(id){
+        var self = this;
+        var actionName = 'comment-get';
+        _db.transaction().then(function(tx){
+          var query = 'SELECT * FROM comments WHERE id=?';
+          _db.execSql(tx,query,[id]).then(function(res){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: res.rows[0]
+            };
+            self.fire('change',payload);
+          });
+        });
+      },
+      createComment: function(data){
+        var self = this;
+        var actionName = 'comment-create';
+        _db.transaction().then(function(tx){
+          var params = [
+            data.author,
+            data.text,
+            data.postId,
+            new Date().toString()
+          ];
+          var query = 'INSERT INTO comments (author,text,post_id,created_at) VALUES (?,?,?,?)';
+          _db.execSql(tx,query,params).then(function(res){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: res.insertId
+            };
+            self.fire('change',payload);
+          });
+        });
+      },
+      getCommentsByPostId: function(id){
+        var self = this;
+        var actionName = 'post-comments';
+        _db.transaction().then(function(tx){
+          var query = 'SELECT * FROM comments WHERE post_id=?';
+          _db.execSql(tx,query,[id]).then(function(res){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: rowToArray(res.rows)
+            };
+            self.fire('change',payload);
+          });
+        });
+      },
+      getAllComments: function(){
+        var self = this;
+        var actionName = 'comment-all';
+        _db.transaction().then(function(tx){
+          var query = 'SELECT * FROM comments'
+          _db.execSql(tx,query).then(function(res){
+            var payload = {
+              aid: aid(),
+              type: actionName,
+              data: rowToArray(res.rows)
+            };
+            self.fire('change',payload);
+          });
+        });
+      }
+    });
+
+  })();
+
+    
+</script>
+
