@@ -26,7 +26,8 @@
       </content>
       <div id="add">
         <strong>Add a Comment</strong> 
-        <paper-textarea label="type your comment here" id="comment-box" rows$="{{commentRows}}" />
+        <paper-input id="author" label="Your Name" />
+        <paper-textarea label="type your comment here" id="comment" rows$="{{commentRows}}" />
       </div>
       <paper-button raised on-click="commentSubmit">Submit</paper-button>
     </div>
@@ -40,6 +41,9 @@
       commentRows:{
         type:Number,
         value:5
+      },
+      postid:{
+        type:Number
       },
       postCount:{
         type:Number,
@@ -59,7 +63,18 @@
       });
     },
     commentSubmit: function(){
-      console.log('boo');
+      if(
+        this.$.author.value != '' &&
+        this.$.comment.value != ''
+      ){
+        var payload = {
+          author: this.$.author.value,
+          text: this.$.comment.value,
+          postId: this.postid
+        };
+        this.fire('');
+      }
+      
     }
   });
 </script>
