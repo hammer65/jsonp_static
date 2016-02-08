@@ -17,7 +17,7 @@ But Python also has a server available and any other basic web server which coul
 
 ##Application One
 
-This is a ver basic blog application which uses a web SQL database for a store.  This store can be prepopulated by going to 
+This is a very basic blog application which uses a web SQL database for a store.  This store can be prepopulated by going to 
 
 `localhost:8080/db.html`
 
@@ -26,7 +26,13 @@ The app itself is located in the index.html file
 `localhost:8080/index.html`
 
 This application uses React with JSX. The included Babel library compiles the JSX on the fly when the page is loaded. For production it is always recommended
-to compile in a build step with Babel. The concepts demonstrated include React, React JSX, Polymer web components and the Flux data flow pattern.
+to compile in a build step with Babel. The concepts demonstrated include 
+
+* React
+* React JSX
+* Polymer web components
+* The Flux data flow pattern.
+
 index.html is heavily commented to walk you through the various parts. Looking through the "bower_components" directory and the 
 custom_elements directory will help you to get familiar with how Polymer web components work.
 
