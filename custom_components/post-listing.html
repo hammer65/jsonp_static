@@ -16,18 +16,22 @@
       padding:4px;
       background-color: #FFF;
     }
-    #main:hover{
-      cursor:pointer;
-      background-color:#E9E9E9;
-    }
     strong{
       font-size:12px;
       font-weight:800;
       font-family:sans-serif;
     }
+    #main[type="full"]{
+      margin:5px;
+      padding:8px;
+    }
+    #main[type="list"]:hover{
+      cursor:pointer;
+      background-color:#E9E9E9;
+    }
   </style>
   <template>
-    <div id="main">
+    <div id="main" type$="{{type}}">
       <strong>{{post-title}}</strong>
       <div id="content">
         <content></content>
@@ -39,7 +43,14 @@
   Polymer({
     is: 'post-listing',
     properties: {
-      "post-title": String
+      "post-title": String,
+      type: {
+        type: String,
+        value: 'list'
+      }
+    },
+    ready: function(){
+      console.log(this.type);
     }
   });
 </script>

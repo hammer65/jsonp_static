@@ -26,7 +26,9 @@
       </content>
       <div id="add">
         <strong>Add a Comment</strong> 
-        <paper-input id="author" label="Your Name" />
+        <div>
+           <paper-input id="author" label="Your Name" />
+        </div>
         <paper-textarea label="type your comment here" id="comment" rows$="{{commentRows}}" />
       </div>
       <paper-button raised on-click="commentSubmit">Submit</paper-button>
@@ -72,7 +74,9 @@
           text: this.$.comment.value,
           postId: this.postid
         };
-        this.fire('');
+        this.fire('comment-create',payload);
+        this.$.author.value = '';
+        this.$.comment.value = '';
       }
       
     }

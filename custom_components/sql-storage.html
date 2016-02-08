@@ -104,7 +104,7 @@
           _db.execSql(tx,query,[id]).then(function(res){
             var payload = {
               aid: aid(),
-              type: actionName,
+              type: 'comment-get',
               data: res.rows[0]
             };
             self.fire('change',payload);
