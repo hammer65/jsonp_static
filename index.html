@@ -105,15 +105,15 @@
 
 
     /*
-    * State is kept in the top level element as much as possible. State in 
+    * State is kept in the top level (app) element as much as possible. State in 
     * every component is bad. In React state is supposed to be considered 
     * mutable while "props" (properties) are considered immutable. Props are
     * only set on render according to element properties (attributes) set for 
-    * the component not through js inside the component other functions. 
+    * the component not through js inside the component's other functions. 
     *
-    * If a component down the tree needs state to respond to an event, 
-    * it should be some sort of master element which is to change 
-    * (re-render) it's children. Filtering props 10 levels down through the 
+    * If a component down the tree needs state to respond to an event,  it 
+    * should be some sort of master element which is to change (re-render) it's 
+    * children (like a data table). Filtering props 10 levels  down through the 
     * tree just to keep the state it came from in the top level is kind of silly.
     *
     * You will notice below that "this.state" can be changed because it is
@@ -133,7 +133,7 @@
     * emitter The only real purpose for a custom isolated event system is if 
     * React is being used with other frameworks which also have events or 
     * which use the DOM events. Events coming from the stores in this project 
-    * have an additional even type value to assist in directing what they do.
+    * have an additional event type value to assist in directing what they do.
     *
     * Using Polymer custom elements in React is not hard. A few things to 
     * remember. 

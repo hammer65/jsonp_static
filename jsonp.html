@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSONP demo</title>
+  <style>
+    .user-table{
+      border:1px solid;
+      width:50%;
+    }
+    .user-table > thead > tr{
+      background-color:#000;
+      color:#FFF;
+    }
+    .user-table > thead  th{
+      padding:3px;
+      border:0px;
+      margin:0px;
+      width:25%;
+      text-align:center;
+    }
+    .user-table > tbody > tr:nth-child(odd){
+      background:#BCBCBC;
+    }
+  </style>
+
+  <link rel="import" href="custom_components/jsonp-storage.html" />
+  <link rel="import" href="custom_components/api-endpoint.html" />
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+</head>
+<body>
+  <!--
+  Setting up JSONP storage. Acts as a Flux store.  This is a custom element which wraps the Polymer iron-jsonp element
+  to run this you would need to start an HTTP server in this master directory on port 8080
+  Like PHP's builtin server 
+  php -S localhost:8080
+  -->
+  <jsonp-storage id="store">
+      <api-endpoint 
+        name="getUsers" 
+        event-name="api-load" 
+        service-url="http://localhost:8080/getusers.js" />
+      <api-endpoint
+        name="addUser",
+        event-name="api-load"
+        service-url="http://localhost:8080/adduser.js" />
+      <api-endpoint
+        name="deleteUser",
+        event-name="api-load"
+        service-url="http://localhost:8080/deleteuser.js" />
+  </jsonp-storage>
+  <!--
+  Root element for app
+  -->
+  <div id="app"></div>
+
+  <!--
+  Get all the React stuff
+  -->
+  <script type="text/javascript" src="bower_components/react/react.js"></script>
+  <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+  <script type="text/javascript" src="bower_components/flux/dist/Flux.min.js"></script>
+
+  <!-- 
+  This app uses React using it's Javascript API. React JSX is compiled into this format. 
+  -->
+  <script>
+    // Get a reference to the custom store polymer element
+    var Store = document.querySelector('#store');
+    // Create a dispatcher instance
+    var Dispatcher = new Flux.Dispatcher();
+    Dispatcher.register(function(payload){
+      switch(payload.actionType){
+        case 'get':
+          Store.loadEndpoint('getUsers');
+          break;
+        case 'add':
+          Store.loadEndpoint('addUser');
+          break;
+        case 'delete':
+          Store.loadEndpoint("deleteUser");
+          break;
+      }
+    });
+
+    var Application = React.createClass({
+        getInitialState: function(){
+          return {
+            rows:[]
+          }
+        }, // component is now initialized and mounted to the DOM and ready to be used.
+        componentDidMount:function(){
+          var _self = this;
+          Store.addEventListener('api-load',function(e){
+            var payload = e.detail[0];
+            _self.setState({rows:payload});
+          });
+        },
+        handleClick:function(e){
+          var action = e.target.id;
+          Dispatcher.dispatch({
+            actionType: action
+          });
+        },
+        render: function(){
+          return React.DOM.div({},
+            [
+              React.DOM.input({type:'button',id:'get',value:'Get Users',onClick:this.handleClick}),
+              React.DOM.input({type:'button',id:'add',value:'Add User Jerry',onClick:this.handleClick}),
+              React.DOM.input({type:'button',id:'delete',value:'Delete User Mary',onClick:this.handleClick}),
+              React.createElement(Table,{rows:this.state.rows,cols:this.props.cols})
+            ]
+          );
+        }
+    });
+
+    var Table = React.createClass({
+            render: function render() {
+                var _self = this;
+                //console.log(this.props.cols);
+                var thead = React.DOM.thead({key:"thead"},
+                    React.DOM.tr({key:"headrow"},
+                        this.props.cols.map(function (col,i) {
+                            return React.DOM.th({key:i}, col);
+                        })
+                    )
+                );
+
+                var tbody = React.DOM.tbody({key:"data-body"},this.props.rows.map(function (row,id){
+                    return React.DOM.tr({key:id},
+                    _self.props.cols.map(function (col,indx) {
+                        return React.DOM.td({key:indx}, row[col]);
+                    }));
+                }));
+                return React.DOM.table({className:"user-table"}, [thead, tbody]);
+            }
+        });
+
+        var appEl = document.querySelector('#app');
+        var columns = ['First Name','Last Name','Address','Phone'];
+        ReactDOM.render(
+          React.createElement(Application,{cols: columns}),
+          appEl
+        );
+  </script>
+</body>
+</html>

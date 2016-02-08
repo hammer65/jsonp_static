@@ -1,0 +1,41 @@
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+<link rel="import" href="../bower_components/iron-jsonp-library/iron-jsonp-library.html" />
+
+<dom-module id="jsonp-storage">
+  <template>
+  <iron-jsonp-library id="store" library-loaded="{{loaded}}" library-error-message="{{error}}" />
+    <content select="api-endpoint"></content>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+
+    is: 'jsonp-storage',
+    properties:{
+      "loaded": {
+        type: Boolean,
+        value: false
+      },
+      errorMessage:{
+        type:String
+      }
+    },
+    loadUrl: function(url,name,event){
+      this.$.store.notifyEvent = event;
+      this.$.store.callbackName = name;
+      this.$.store.libraryUrl = url;
+    },
+    loadEndpoint: function(name){
+      var selector = '[name="' + name + '"]'
+      var exec = Polymer.dom(this).querySelector(selector);
+      if(exec){
+        var url = exec.serviceUrl;
+        var e = exec.eventName;
+        this.loadUrl(url,name,e);
+      }
+    }
+
+
+  });
+</script>
