@@ -1,4 +1,4 @@
-*React Demonstrators
+#React Demonstrators
 
 This repository contains two separate projects intended to demonstrate the use of 
 * React
@@ -15,7 +15,7 @@ access both demonstrations. The server I used is the server supplied by my PHP d
 
 But Python also has a server available and any other basic web server which could be rooted in this directory would work.
 
-**Application One
+##Application One
 
 This is a ver basic blog application which uses a web SQL database for a store.  This store can be prepopulated by going to 
 
@@ -34,7 +34,7 @@ I didn't sweat the CSS too much but by looking at the source you will see that t
 are through style encapsulation via Polymer elements or by way of Polymers included style sheets. Those encapsulated styles have
 no effect on any other scope. Elements can be themable through CSS and still have their own isolated styles.
 
-**Application Two
+##Application Two
 
 This application is accessible through 
 
