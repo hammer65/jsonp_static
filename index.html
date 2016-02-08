@@ -76,9 +76,9 @@
     var Store = document.querySelector('#storage');
     // Create a dispatcher instance
     var Dispatcher = new Flux.Dispatcher();
-    //set up the dispatcher
-    // The event below are actions sent from React components
-    // they call the store functions which then send a change event out
+    // set up the dispatcher
+    // The events below are actions (prefixed with an a for clarity) sent from React components
+    // they call the store functions which then send a change event out which components listen for.
     Dispatcher.register(function(payload){
       
       switch(payload.actionType){
@@ -105,27 +105,53 @@
 
 
     /*
-    * State is kept in the top level element as much as possible
-    * State in every component is bad. In React state is supposed to be
-    * considered mutable while "props" (properties) are considered 
-    * immutable. Props are only set on render according to element 
-    * properties (attributes) set for the component not through js 
-    * inside the component itself. 
+    * State is kept in the top level element as much as possible. State in 
+    * every component is bad. In React state is supposed to be considered 
+    * mutable while "props" (properties) are considered immutable. Props are
+    * only set on render according to element properties (attributes) set for 
+    * the component not through js inside the component other functions. 
     *
     * If a component down the tree needs state to respond to an event, 
-    * it should be some sort master element which is to change 
-    * (re-render) it's children.
+    * it should be some sort of master element which is to change 
+    * (re-render) it's children. Filtering props 10 levels down through the 
+    * tree just to keep the state it came from in the top level is kind of silly.
     *
     * You will notice below that "this.state" can be changed because it is
     * just a Javascript value (Array, Object, primative). However only
-    * calling "setState" will trigger a re-render of the tree from that 
-    * point down. Redux takes state management out of components and puts
-    * it in a seperate object. This project does not use that technique,
-    * just the bare bones React way of doing it.
+    * calling "setState" will trigger a re-render of the tree from that point down.
+    * Managing state with out of the box React is kind of a pain. When you call 
+    * setState you must feed it ALL of the state, even values which did not
+    * change. 
+    *
+    * The Redux system takes state management out of components and puts
+    * it in a seperate object. This project does not use that technique, just the 
+    * bare bones React way of doing it.
     *
     * I chose a custom Polymer element for the store in this case because it
     * is a first class DOM element and therefore has addEventListener and 
-    * removeEventListener for free without the need for the node event emitter
+    * removeEventListener for free without the need for the node event 
+    * emitter The only real purpose for a custom isolated event system is if 
+    * React is being used with other frameworks which also have events or 
+    * which use the DOM events. Events coming from the stores in this project 
+    * have an additional even type value to assist in directing what they do.
+    *
+    * Using Polymer custom elements in React is not hard. A few things to 
+    * remember. 
+    * 1. You CAN and must use "class" rather than "className" for CSS in 
+    * Polymer elements For whatever reason React treats non-standard tags
+    * with dashes in the names differently than other tags and it's own 
+    * components in this regard.
+    *
+    * 2. Polymer has a few "one word" html attributes which can be used for 
+    * formatting  or styling. They are available to other elements besides 
+    * Polymer elements such as divs in the main document but React will not 
+    * support custom attributes of that kind in  standard HTML elements. The 
+    * solution offered here is a basic Polymer element which is display:block 
+    * called <polymer-react /> which gets around that issue.
+    *
+    * 3. Polymer layout tags were used here, but bootstrap React classes 
+    * and other things could just as easily be used while web components are 
+    * used solely for widgets.
     */
     var Application = React.createClass({
       getInitialState: function(){
@@ -302,6 +328,12 @@
                 text={c.text} />
             );
           });
+          /*
+          *  dangerouslySetInnerHTML is a special React attribute which is there to remind you
+          * how dangerous putting markup as a string into an HTML element on the client side can be
+          *. In this case used to insert blog post content that may have HTML in it. The "arg" variable
+          * below and the way it is inserted into the div under that is the recommended way in React.
+          */
           var arg = {__html:this.props.data.text}
           var content = (
             <div dangerouslySetInnerHTML={arg}  />
@@ -343,8 +375,7 @@
           <paper-dialog 
               ref="npDialog"
               opened={this.props.show}
-              modal="true"
-              exit-animation="fade-out-animation">
+              modal="true">
             <paper-dialog-scrollable>
                 <fieldset>
                    <legend>New Post</legend>
@@ -421,7 +452,7 @@
       }
     });
 
-
+    // putting the app inside the root element
     var app = document.querySelector('#app');
     ReactDOM.render(
       React.createElement(
