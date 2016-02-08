@@ -44,8 +44,7 @@ no effect on any other scope. Elements can be themable through CSS and still hav
 
 ##Application Two
 
-![alt text](https://github.com/hammer65/jsonp_static/blob/master/react_screen_02.png?raw=true "Application 1")
-
+![alt text](https://github.com/hammer65/jsonp_static/blob/master/react_screen_02.png?raw=true "Application 2")
 This application is accessible through 
 
 `localhost:8080/jsonp.html`
